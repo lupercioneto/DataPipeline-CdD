@@ -61,6 +61,28 @@ class DataTransformer:
 
         Logger.alert("Numeric Conversion Accomplished!", log_type=LogType.SUCCESS)
 
+    def remove_outliers_iqr(self, column):
+
+        q1 = self.df[column].quantile(0.25)
+        q3 = self.df[column].quantile(0.75)
+
+        iqr = q3 - q1
+
+        lower = q1 - (1.5 * iqr)
+        upper = q3 + (1.5 * iqr)
+
+        original_size = len(self.df)
+
+        self.df = self.df[
+            (self.df[column] >= lower) &
+            (self.df[column] <= upper)
+        ]
+
+        removed = original_size - len(self.df)
+
+        Logger.alert(
+            f"{removed} outliers removed from column {column}", log_type=LogType.SUCCESS)
+
     def handle_nulls(self):
 
         Logger.alert("Processing null values!", log_type=LogType.INFO)

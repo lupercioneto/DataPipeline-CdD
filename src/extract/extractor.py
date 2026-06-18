@@ -13,7 +13,7 @@ class DataExtractor:
 
             df = pd.read_csv(self.file_path)
 
-            Logger.alert(message="File Success Loaded!", log_type=LogType.SUCCESS)
+            Logger.alert(message=f"File Success Loaded! {df.shape[0]} lines X {df.shape[1]} columns", log_type=LogType.SUCCESS)
 
             return df
 

@@ -10,6 +10,11 @@ def main():
     )
 
     df = extractor.extract_csv()
+    columns = [
+        "daily_vaccinations",
+        "people_vaccinated",
+        "people_fully_vaccinated"
+    ]
 
     if df is None:
         Logger.alert(message="Pipeline Finished", log_type=LogType.WARNING)
@@ -22,7 +27,14 @@ def main():
     transformer.convert_numeric_columns()
     transformer.handle_nulls()
     transformer.remove_duplicates()
+    
+    # Remove só uma coluna
+    # transformer.remove_outliers_iqr("daily_vaccinations")
 
+    # Remove da lista columns
+    """for col in columns:
+        transformer.remove_outliers_iqr(col)"""
+    
     final_df = transformer.get_dataframe()
 
     final_df.to_csv(
