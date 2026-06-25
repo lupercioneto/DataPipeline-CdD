@@ -10,7 +10,7 @@ Dataset utilizado: [Country Vaccinations](https://www.kaggle.com/datasets/gpreda
 * **Equipe:**
   * Francisco Lupercio 
   * Daniel Galvão
-  * João Algusto
+  * João Augusto
 
 ---
 
