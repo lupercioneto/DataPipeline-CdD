@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
@@ -75,7 +77,7 @@ class UnsupervisedAnalyzer:
 
         return self.X_pca, self.explained_variance_ratio
 
-    def plot_pca_projection(self, output_path: str = "../pca_projecao.png"):
+    def plot_pca_projection(self, output_path: str = "../plots/pca_projecao.png"):
         """Salva o gráfico de dispersão da projeção PCA (sem coloração por
         cluster), conforme exigido pelo enunciado."""
 
@@ -99,12 +101,13 @@ class UnsupervisedAnalyzer:
         ax.grid(True, linestyle="--", alpha=0.3)
 
         fig.tight_layout()
+        os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
         fig.savefig(output_path, dpi=150)
         plt.close(fig)
 
         Logger.alert(f"Gráfico salvo com sucesso em: {output_path}", LogType.SUCCESS)
 
-    def run_elbow_method(self, output_path: str = "../curva_cotovelo_kmeans.png"):
+    def run_elbow_method(self, output_path: str = "../plots/curva_cotovelo_kmeans.png"):
         """Plota a inércia contra k para determinar o número ótimo de
         clusters (Método do Cotovelo)."""
 
@@ -127,6 +130,7 @@ class UnsupervisedAnalyzer:
         ax.grid(True, linestyle="--", alpha=0.3)
 
         fig.tight_layout()
+        os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
         fig.savefig(output_path, dpi=150)
         plt.close(fig)
 
@@ -150,7 +154,7 @@ class UnsupervisedAnalyzer:
 
         return self.cluster_labels
 
-    def plot_clusters(self, output_path: str = "../clusters_kmeans.png"):
+    def plot_clusters(self, output_path: str = "../plots/clusters_kmeans.png"):
         """Salva a projeção PCA identificando visualmente cada cluster
         por cores distintas."""
 
@@ -174,6 +178,7 @@ class UnsupervisedAnalyzer:
         ax.grid(True, linestyle="--", alpha=0.3)
 
         fig.tight_layout()
+        os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
         fig.savefig(output_path, dpi=150)
         plt.close(fig)
 
@@ -181,9 +186,9 @@ class UnsupervisedAnalyzer:
 
     def run_full_analysis(
         self,
-        pca_output_path: str = "../pca_projecao.png",
-        elbow_output_path: str = "../curva_cotovelo_kmeans.png",
-        clusters_output_path: str = "../clusters_kmeans.png",
+        pca_output_path: str = "../plots/pca_projecao.png",
+        elbow_output_path: str = "../plots/curva_cotovelo_kmeans.png",
+        clusters_output_path: str = "../plots/clusters_kmeans.png",
     ):
 
         self.prepare_features()

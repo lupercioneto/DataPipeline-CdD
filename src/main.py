@@ -40,7 +40,7 @@ def main():
 
     visualizer = DataVisualizer(final_df)
     visualizer.plot_daily_vaccinations_evolution(
-        output_path="../dados_vacinacao_diaria.png"
+        output_path="../plots/dados_vacinacao_diaria.png"
     )
 
     # --- Parte 2: Inferência Estatística, Testes A/B e Causalidade ---
@@ -53,7 +53,7 @@ def main():
         random_state=42,
     )
     bootstrap_results = bootstrap_analyzer.run_full_analysis(
-        output_path="../distribuicao_bootstrap.png"
+        output_path="../plots/distribuicao_bootstrap.png"
     )
     Logger.alert(f"Resumo Bootstrap: {bootstrap_results}", LogType.INFO)
 
@@ -71,7 +71,7 @@ def main():
         random_state=42,
     )
     ab_test_results = ab_test_analyzer.run_full_analysis(
-        output_path="../distribuicao_permutacao.png"
+        output_path="../plots/distribuicao_permutacao.png"
     )
     Logger.alert(f"Resumo Teste A/B: {ab_test_results}", LogType.INFO)
 
@@ -110,9 +110,9 @@ def main():
         n_clusters=3,
     )
     unsupervised_results = unsupervised_analyzer.run_full_analysis(
-        pca_output_path="../pca_projecao.png",
-        elbow_output_path="../curva_cotovelo_kmeans.png",
-        clusters_output_path="../clusters_kmeans.png",
+        pca_output_path="../plots/pca_projecao.png",
+        elbow_output_path="../plots/curva_cotovelo_kmeans.png",
+        clusters_output_path="../plots/clusters_kmeans.png",
     )
     Logger.alert(f"Resumo Não Supervisionado: {unsupervised_results}", LogType.INFO)
 

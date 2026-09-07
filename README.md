@@ -38,12 +38,14 @@ DataPipeline-CdD/
 │   ├── logs/
 │   │   └── log.py              # logger simples
 │   └── main.py                 # orquestrador de todo o pipeline (ETL + Parte 2)
+├── plots/
+│   ├── dados_vacinacao_diaria.png  # evolução temporal da vacinação diária (Parte 1)
+│   ├── distribuicao_bootstrap.png  # histograma bootstrap + limites dos ICs
+│   ├── distribuicao_permutacao.png # distribuição sob H0 do teste de permutação
+│   ├── curva_cotovelo_kmeans.png   # método do cotovelo (inércia x k)
+│   ├── clusters_kmeans.png         # projeção PCA colorida por cluster
+│   └── pca_projecao.png            # projeção PCA (PC1 x PC2)
 ├── dados_limpos_final.csv      # saída final consolidada (Parte 1)
-├── distribuicao_bootstrap.png  # histograma bootstrap + limites dos ICs
-├── distribuicao_permutacao.png # distribuição sob H0 do teste de permutação
-├── curva_cotovelo_kmeans.png   # método do cotovelo (inércia x k)
-├── clusters_kmeans.png         # projeção PCA colorida por cluster
-├── pca_projecao.png            # projeção PCA (PC1 x PC2)
 ├── requirements.txt
 └── README.md
 ```
@@ -211,17 +213,17 @@ de `daily_vaccinations` (métrica principal do tema), com:
 - eixo Y iniciando em zero, evitando distorção visual de magnitude;
 - sem truncamentos ou escalas não-lineares que possam induzir leitura equivocada.
 
-A imagem é exportada automaticamente para `dados_vacinacao_diaria.png` na raiz do projeto, a
-partir da base já tratada (`dados_limpos_final.csv`).
+A imagem é exportada automaticamente para `plots/dados_vacinacao_diaria.png`, a partir da base
+já tratada (`dados_limpos_final.csv`).
 
 ---
 
 ## 6. Saída do Pipeline (Parte 1)
 
-Ao final da execução de `main.py`, o pipeline gera na raiz do projeto:
+Ao final da execução de `main.py`, o pipeline gera:
 
-- `dados_limpos_final.csv` — base de dados final, tratada e consolidada;
-- `dados_vacinacao_diaria.png` — gráfico de integridade visual.
+- `dados_limpos_final.csv` — base de dados final, tratada e consolidada, na raiz do projeto;
+- `plots/dados_vacinacao_diaria.png` — gráfico de integridade visual.
 
 ---
 
@@ -241,7 +243,7 @@ com reposição, foram obtidos:
 | IC 95% Bootstrap (percentil 2,5%/97,5%) | [16,3392 ; 16,7521] |
 | IC 95% Paramétrico (X̄ ± 1,96·s/√N) | [16,3453 ; 16,7406] |
 
-Gráfico: [`distribuicao_bootstrap.png`](distribuicao_bootstrap.png).
+Gráfico: [`plots/distribuicao_bootstrap.png`](plots/distribuicao_bootstrap.png).
 
 **Comparação das metodologias:** os dois intervalos são praticamente coincidentes (diferença de
 amplitude inferior a 0,02 no limite superior/inferior). Isso é esperado: com N = 73.316, o Erro
@@ -284,7 +286,7 @@ igual ou abaixo da mediana), comparando o ritmo diário de vacinação (`daily_v
 | X̄_A − X̄_B (observado) | 10.963,08 |
 | Valor-p empírico (bicaudal) | 0,00050 |
 
-Gráfico: [`distribuicao_permutacao.png`](distribuicao_permutacao.png).
+Gráfico: [`plots/distribuicao_permutacao.png`](plots/distribuicao_permutacao.png).
 
 **Conclusão formal:** como p-valor (0,00050) < α (0,05), **rejeita-se H0**. Há evidência
 estatística de diferença no ritmo diário de vacinação entre os dois grupos.
@@ -351,12 +353,12 @@ features adicionais (ex.: variação temporal da taxa, e não apenas o nível ac
 - **Variância acumulada (PC1 + PC2): 96,94%**
 
 Como os dois primeiros componentes já capturam quase toda a variância dos dados, o plano PC1×PC2
-(`pca_projecao.png`) é uma representação fiel da estrutura original de 4 dimensões, com perda
+(`plots/pca_projecao.png`) é uma representação fiel da estrutura original de 4 dimensões, com perda
 de informação desprezível (~3%). Isso é esperado: as quatro variáveis originais são fortemente
 correlacionadas entre si (todas medem, sob ângulos distintos, "quanto uma região avançou na
 campanha de vacinação"), então poucos componentes bastam para resumir o mesmo sinal subjacente.
 
-**K-Means:** com k = 3 (escolhido a partir do cotovelo em `curva_cotovelo_kmeans.png`, onde a
+**K-Means:** com k = 3 (escolhido a partir do cotovelo em `plots/curva_cotovelo_kmeans.png`, onde a
 queda de inércia se torna marginal a partir de k ≈ 3), os clusters resultantes têm os tamanhos:
 
 | Cluster | Tamanho | Interpretação física |
@@ -365,7 +367,7 @@ queda de inércia se torna marginal a partir de k ≈ 3), os clusters resultante
 | 0 | 14.177 | Estágio intermediário — cobertura e ritmo moderados |
 | 2 | 8.601 | Estágio avançado — alta cobertura acumulada e/ou ritmo elevado (campanhas maduras) |
 
-Gráfico: [`clusters_kmeans.png`](clusters_kmeans.png). Na prática, os clusters funcionam como um
+Gráfico: [`plots/clusters_kmeans.png`](plots/clusters_kmeans.png). Na prática, os clusters funcionam como um
 proxy de "estágio da campanha de vacinação" de cada país em cada data, útil para segmentar
 políticas públicas (ex.: reforço logístico prioritário nos países ainda no cluster de estágio
 inicial).

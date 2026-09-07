@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -19,7 +21,7 @@ class DataVisualizer:
 
     def plot_daily_vaccinations_evolution(
         self,
-        output_path: str = "../dados_vacinacao_diaria.png"
+        output_path: str = "../plots/dados_vacinacao_diaria.png"
     ):
         """
         Gráfico de Linhas: Evolução temporal da métrica principal
@@ -78,6 +80,7 @@ class DataVisualizer:
         fig.autofmt_xdate()
         fig.tight_layout()
 
+        os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
         fig.savefig(output_path, dpi=150)
         plt.close(fig)
 

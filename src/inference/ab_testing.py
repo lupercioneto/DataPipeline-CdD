@@ -1,4 +1,6 @@
 
+import os
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -158,7 +160,7 @@ class ABTestAnalyzer:
 
         return reject_h0, conclusion
 
-    def plot_null_distribution(self, output_path: str = "../distribuicao_permutacao.png"):
+    def plot_null_distribution(self, output_path: str = "../plots/distribuicao_permutacao.png"):
         
 
         if self.permutation_diffs is None or self.observed_diff is None:
@@ -195,12 +197,13 @@ class ABTestAnalyzer:
         ax.grid(axis="y", linestyle="--", alpha=0.3)
 
         fig.tight_layout()
+        os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
         fig.savefig(output_path, dpi=150)
         plt.close(fig)
 
         Logger.alert(f"Gráfico salvo com sucesso em: {output_path}", LogType.SUCCESS)
 
-    def run_full_analysis(self, output_path: str = "../distribuicao_permutacao.png"):
+    def run_full_analysis(self, output_path: str = "../plots/distribuicao_permutacao.png"):
         
 
         self.prepare_groups()
@@ -249,6 +252,6 @@ if __name__ == "__main__":
             random_state=42,
         )
 
-        results = analyzer.run_full_analysis(output_path="../distribuicao_permutacao.png")
+        results = analyzer.run_full_analysis(output_path="../plots/distribuicao_permutacao.png")
 
         Logger.alert(f"Resumo Teste A/B: {results}", LogType.INFO)
