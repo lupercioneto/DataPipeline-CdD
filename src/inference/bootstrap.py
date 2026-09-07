@@ -1,20 +1,3 @@
-"""
-Módulo de Inferência Estatística - Reamostragem Bootstrap.
-
-Estima a média populacional de uma variável numérica contínua chave do
-dataset (people_vaccinated_per_hundred: pessoas vacinadas a cada 100
-habitantes) por meio de reamostragem Bootstrap com reposição, comparando
-o Intervalo de Confiança (IC) de 95% obtido por duas metodologias:
-
-    - Não-Paramétrica (Bootstrap): percentis 2.5% e 97.5% da
-      distribuição empírica das médias reamostradas.
-    - Paramétrica Tradicional (aproximação normal / TCL):
-      IC95% = X̄ ± z95% * (s / sqrt(N))
-
-Referência: Avaliação Prática Unificada (Parte 2) - Seção 4.1
-(avp2.pdf).
-"""
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

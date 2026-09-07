@@ -42,11 +42,14 @@ class ABTestAnalyzer:
         df = dataframe.copy()
         cutoff = threshold if threshold is not None else df[split_column].median()
 
-        df[group_column] = np.where(df[split_column] >= cutoff, "alta", "baixa")
+        # Corte estritamente maior que o ponto de corte: evita que um grupo
+        # fique vazio quando há massa de observações concentrada exatamente
+        # na mediana (ex.: coluna com muitos zeros, como neste dataset).
+        df[group_column] = np.where(df[split_column] > cutoff, "alta", "baixa")
 
         Logger.alert(
             f"Grupos definidos por '{split_column}' (corte={cutoff:.4f}): "
-            f"Grupo A = 'alta' (>= corte), Grupo B = 'baixa' (< corte)",
+            f"Grupo A = 'alta' (> corte), Grupo B = 'baixa' (<= corte)",
             LogType.INFO
         )
 
